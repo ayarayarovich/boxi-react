@@ -1,0 +1,54 @@
+{
+    "name": "boxi-react",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "bunx --bun vite",
+        "build": "tsc -b && vite build",
+        "lint": "eslint .",
+        "preview": "vite preview",
+        "prepare": "husky",
+        "lint-staged": "lint-staged"
+    },
+    "lint-staged": {
+        "*.{js, jsx,ts,tsx}": [
+            "eslint --quiet --fix"
+        ],
+        "*.{json,js,ts,jsx,tsx,html}": [
+            "prettier --write --ignore-unknown"
+        ]
+    },
+    "dependencies": {
+        "@tailwindcss/vite": "^4.0.1",
+        "@tanstack/react-query": "^5.66.0",
+        "@tanstack/react-router": "^1.98.4",
+        "@telegram-apps/sdk-react": "^3.0.5",
+        "@tonconnect/ui-react": "^2.0.11",
+        "gsap": "^3.12.7",
+        "radashi": "^12.3.4",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "tailwindcss": "^4.0.1"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.17.0",
+        "@tanstack/eslint-plugin-query": "^5.66.0",
+        "@tanstack/router-devtools": "^1.98.4",
+        "@tanstack/router-plugin": "^1.98.6",
+        "@types/react": "^18.3.18",
+        "@types/react-dom": "^18.3.5",
+        "@vitejs/plugin-react-swc": "^3.5.0",
+        "eslint": "^9.17.0",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "eslint-plugin-react-refresh": "^0.4.16",
+        "globals": "^15.14.0",
+        "typescript": "~5.6.2",
+        "typescript-eslint": "^8.18.2",
+        "vite": "^6.0.5",
+        "vite-tsconfig-paths": "^5.1.4"
+    },
+    "trustedDependencies": [
+        "@swc/core"
+    ]
+}

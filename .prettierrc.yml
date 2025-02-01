@@ -1,0 +1,36 @@
+printWidth: 140
+tabWidth: 4
+singleQuote: true
+semi: false
+jsxSingleQuote: true
+quoteProps: as-needed
+trailingComma: all
+bracketSpacing: true
+bracketSameLine: false
+arrowParens: always
+plugins:
+    - '@ianvs/prettier-plugin-sort-imports'
+    - 'prettier-plugin-tailwindcss'
+
+importOrder:
+    - '^react(.*)$'
+    - ''
+    - '<THIRD_PARTY_MODULES>'
+    - ''
+    - '^@/shared[/]?(.*)$'
+    - ''
+    - '^@/lib[/]?(.*)$'
+    - ''
+    - '^@/components[/]?(.*)$'
+    - ''
+    - '^@/icons[/]?(.*)$'
+    - ''
+    - "^\\.\\./(.*)$"
+    - "^\\./(.*)$"
+    - ''
+    - '^[.]'
+importOrderParserPlugins:
+    - 'typescript'
+    - 'jsx'
+    - 'decorators-legacy'
+importOrderTypeScriptVersion: '5.6.2'

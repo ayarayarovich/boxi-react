@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+@source '.';
+
+@theme {
+    --font-sans: 'Roboto Condensed', serif;
+    --color-dark: #010101;
+    --color-dark-elevated: #141414;
+    --color-red: #a11320;
+    --color-yellow: #ffb841;
+}
+
+body {
+    overflow: hidden;
+    width: 100lvw;
+    height: 100lvh;
+
+    --content-safe-inset-top: calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top));
+    --content-safe-inset-bottom: calc(var(--tg-viewport-safe-area-inset-bottom) + var(--tg-viewport-content-safe-area-inset-bottom));
+}
+
+html {
+    @apply bg-dark text-white;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
