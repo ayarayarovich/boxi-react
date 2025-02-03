@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
-import { Route as LayoutShopImport } from './routes/_layout/shop'
+import { Route as LayoutShopRouteImport } from './routes/_layout/shop/route'
 import { Route as LayoutShopIndexImport } from './routes/_layout/shop/index'
 import { Route as LayoutShopConsumablesImport } from './routes/_layout/shop/consumables'
 
@@ -30,7 +30,7 @@ const LayoutIndexRoute = LayoutIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutShopRoute = LayoutShopImport.update({
+const LayoutShopRouteRoute = LayoutShopRouteImport.update({
   id: '/shop',
   path: '/shop',
   getParentRoute: () => LayoutRoute,
@@ -39,13 +39,13 @@ const LayoutShopRoute = LayoutShopImport.update({
 const LayoutShopIndexRoute = LayoutShopIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutShopRoute,
+  getParentRoute: () => LayoutShopRouteRoute,
 } as any)
 
 const LayoutShopConsumablesRoute = LayoutShopConsumablesImport.update({
   id: '/consumables',
   path: '/consumables',
-  getParentRoute: () => LayoutShopRoute,
+  getParentRoute: () => LayoutShopRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -63,7 +63,7 @@ declare module '@tanstack/react-router' {
       id: '/_layout/shop'
       path: '/shop'
       fullPath: '/shop'
-      preLoaderRoute: typeof LayoutShopImport
+      preLoaderRoute: typeof LayoutShopRouteImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/': {
@@ -78,41 +78,41 @@ declare module '@tanstack/react-router' {
       path: '/consumables'
       fullPath: '/shop/consumables'
       preLoaderRoute: typeof LayoutShopConsumablesImport
-      parentRoute: typeof LayoutShopImport
+      parentRoute: typeof LayoutShopRouteImport
     }
     '/_layout/shop/': {
       id: '/_layout/shop/'
       path: '/'
       fullPath: '/shop/'
       preLoaderRoute: typeof LayoutShopIndexImport
-      parentRoute: typeof LayoutShopImport
+      parentRoute: typeof LayoutShopRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface LayoutShopRouteChildren {
+interface LayoutShopRouteRouteChildren {
   LayoutShopConsumablesRoute: typeof LayoutShopConsumablesRoute
   LayoutShopIndexRoute: typeof LayoutShopIndexRoute
 }
 
-const LayoutShopRouteChildren: LayoutShopRouteChildren = {
+const LayoutShopRouteRouteChildren: LayoutShopRouteRouteChildren = {
   LayoutShopConsumablesRoute: LayoutShopConsumablesRoute,
   LayoutShopIndexRoute: LayoutShopIndexRoute,
 }
 
-const LayoutShopRouteWithChildren = LayoutShopRoute._addFileChildren(
-  LayoutShopRouteChildren,
+const LayoutShopRouteRouteWithChildren = LayoutShopRouteRoute._addFileChildren(
+  LayoutShopRouteRouteChildren,
 )
 
 interface LayoutRouteChildren {
-  LayoutShopRoute: typeof LayoutShopRouteWithChildren
+  LayoutShopRouteRoute: typeof LayoutShopRouteRouteWithChildren
   LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutShopRoute: LayoutShopRouteWithChildren,
+  LayoutShopRouteRoute: LayoutShopRouteRouteWithChildren,
   LayoutIndexRoute: LayoutIndexRoute,
 }
 
@@ -121,7 +121,7 @@ const LayoutRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof LayoutRouteWithChildren
-  '/shop': typeof LayoutShopRouteWithChildren
+  '/shop': typeof LayoutShopRouteRouteWithChildren
   '/': typeof LayoutIndexRoute
   '/shop/consumables': typeof LayoutShopConsumablesRoute
   '/shop/': typeof LayoutShopIndexRoute
@@ -136,7 +136,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_layout': typeof LayoutRouteWithChildren
-  '/_layout/shop': typeof LayoutShopRouteWithChildren
+  '/_layout/shop': typeof LayoutShopRouteRouteWithChildren
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/shop/consumables': typeof LayoutShopConsumablesRoute
   '/_layout/shop/': typeof LayoutShopIndexRoute
@@ -186,7 +186,7 @@ export const routeTree = rootRoute
       ]
     },
     "/_layout/shop": {
-      "filePath": "_layout/shop.tsx",
+      "filePath": "_layout/shop/route.tsx",
       "parent": "/_layout",
       "children": [
         "/_layout/shop/consumables",

@@ -35,7 +35,7 @@ function RouteComponent() {
 
     return (
         <div className='relative h-svh pt-(--content-safe-inset-top)'>
-            <ReactHowler src='/bg.webm' volume={0.3} playing={backgroundMusicPlaying} />
+            <ReactHowler src='/bg.mp3' loop volume={0.1} playing={backgroundMusicPlaying} />
             <div
                 className='h-full overflow-hidden'
                 style={{

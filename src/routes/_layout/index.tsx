@@ -3,6 +3,8 @@ import { hapticFeedback } from '@telegram-apps/sdk-react'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { motion } from 'framer-motion'
 
+import { CLICK_SOUND } from '@/shared/sounds'
+
 import { FlashIcon, GloveIcon, InfoIcon, ShareIcon, TonIcon } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 
@@ -81,6 +83,7 @@ function RouteComponent() {
                                     scale: 0.9,
                                 }}
                                 onClick={() => {
+                                    CLICK_SOUND.play()
                                     hapticFeedback.impactOccurred('soft')
                                 }}
                             >
@@ -96,6 +99,7 @@ function RouteComponent() {
                                     scale: 0.9,
                                 }}
                                 onClick={() => {
+                                    CLICK_SOUND.play()
                                     hapticFeedback.impactOccurred('soft')
                                 }}
                             >
