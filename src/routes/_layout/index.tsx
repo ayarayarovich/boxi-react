@@ -55,12 +55,7 @@ function RouteComponent() {
                     '*:shrink-0 *:basis-[calc(70vw+1.25rem)] *:snap-start *:pl-5 *:last:pr-5',
                 )}
             >
-                <div
-                    onClick={(e) => {
-                        const target: HTMLDivElement = e.target as HTMLDivElement
-                        target.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                >
+                <div>
                     <div className='flex h-full w-full flex-col items-stretch overflow-hidden rounded-2xl'>
                         <div className='bg-red flex-1 p-4'>
                             <div className='mb-6 flex items-start justify-between gap-5'>
@@ -111,46 +106,7 @@ function RouteComponent() {
                     </div>
                 </div>
 
-                <div
-                    onClick={(e) => {
-                        const target: HTMLDivElement = e.target as HTMLDivElement
-                        target.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                >
-                    <div className='bg-dark-elevated/50 flex h-full flex-col items-stretch overflow-hidden rounded-2xl border border-[#292929] backdrop-blur-xl'>
-                        <div className='flex-1 p-4'>
-                            <div className='flex items-start justify-between gap-5'>
-                                <div className='text-xl leading-tight font-semibold uppercase'>
-                                    Low <br /> stake
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    onClick={(e) => {
-                        const target: HTMLDivElement = e.target as HTMLDivElement
-                        target.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                >
-                    <div className='bg-dark-elevated/50 flex h-full flex-col items-stretch overflow-hidden rounded-2xl border border-[#292929] backdrop-blur-xl'>
-                        <div className='flex-1 p-4'>
-                            <div className='flex items-start justify-between gap-5'>
-                                <div className='text-xl leading-tight font-semibold uppercase'>
-                                    Low <br /> stake
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    onClick={(e) => {
-                        const target: HTMLDivElement = e.target as HTMLDivElement
-                        target.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                >
+                <div>
                     <div className='bg-dark-elevated/50 flex h-full flex-col items-stretch overflow-hidden rounded-2xl border border-[#292929] backdrop-blur-xl'>
                         <div className='flex-1 p-4'>
                             <div className='flex items-start justify-between gap-5'>

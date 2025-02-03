@@ -13,86 +13,161 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
+import { Route as LayoutShopImport } from './routes/_layout/shop'
+import { Route as LayoutShopIndexImport } from './routes/_layout/shop/index'
+import { Route as LayoutShopConsumablesImport } from './routes/_layout/shop/consumables'
 
 // Create/Update Routes
 
 const LayoutRoute = LayoutImport.update({
-    id: '/_layout',
-    getParentRoute: () => rootRoute,
+  id: '/_layout',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const LayoutIndexRoute = LayoutIndexImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => LayoutRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutShopRoute = LayoutShopImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutShopIndexRoute = LayoutShopIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutShopRoute,
+} as any)
+
+const LayoutShopConsumablesRoute = LayoutShopConsumablesImport.update({
+  id: '/consumables',
+  path: '/consumables',
+  getParentRoute: () => LayoutShopRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-    interface FileRoutesByPath {
-        '/_layout': {
-            id: '/_layout'
-            path: ''
-            fullPath: ''
-            preLoaderRoute: typeof LayoutImport
-            parentRoute: typeof rootRoute
-        }
-        '/_layout/': {
-            id: '/_layout/'
-            path: '/'
-            fullPath: '/'
-            preLoaderRoute: typeof LayoutIndexImport
-            parentRoute: typeof LayoutImport
-        }
+  interface FileRoutesByPath {
+    '/_layout': {
+      id: '/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutImport
+      parentRoute: typeof rootRoute
     }
+    '/_layout/shop': {
+      id: '/_layout/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof LayoutShopImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/': {
+      id: '/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/shop/consumables': {
+      id: '/_layout/shop/consumables'
+      path: '/consumables'
+      fullPath: '/shop/consumables'
+      preLoaderRoute: typeof LayoutShopConsumablesImport
+      parentRoute: typeof LayoutShopImport
+    }
+    '/_layout/shop/': {
+      id: '/_layout/shop/'
+      path: '/'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof LayoutShopIndexImport
+      parentRoute: typeof LayoutShopImport
+    }
+  }
 }
 
 // Create and export the route tree
 
+interface LayoutShopRouteChildren {
+  LayoutShopConsumablesRoute: typeof LayoutShopConsumablesRoute
+  LayoutShopIndexRoute: typeof LayoutShopIndexRoute
+}
+
+const LayoutShopRouteChildren: LayoutShopRouteChildren = {
+  LayoutShopConsumablesRoute: LayoutShopConsumablesRoute,
+  LayoutShopIndexRoute: LayoutShopIndexRoute,
+}
+
+const LayoutShopRouteWithChildren = LayoutShopRoute._addFileChildren(
+  LayoutShopRouteChildren,
+)
+
 interface LayoutRouteChildren {
-    LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutShopRoute: typeof LayoutShopRouteWithChildren
+  LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-    LayoutIndexRoute: LayoutIndexRoute,
+  LayoutShopRoute: LayoutShopRouteWithChildren,
+  LayoutIndexRoute: LayoutIndexRoute,
 }
 
-const LayoutRouteWithChildren = LayoutRoute._addFileChildren(LayoutRouteChildren)
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 export interface FileRoutesByFullPath {
-    '': typeof LayoutRouteWithChildren
-    '/': typeof LayoutIndexRoute
+  '': typeof LayoutRouteWithChildren
+  '/shop': typeof LayoutShopRouteWithChildren
+  '/': typeof LayoutIndexRoute
+  '/shop/consumables': typeof LayoutShopConsumablesRoute
+  '/shop/': typeof LayoutShopIndexRoute
 }
 
 export interface FileRoutesByTo {
-    '/': typeof LayoutIndexRoute
+  '/': typeof LayoutIndexRoute
+  '/shop/consumables': typeof LayoutShopConsumablesRoute
+  '/shop': typeof LayoutShopIndexRoute
 }
 
 export interface FileRoutesById {
-    __root__: typeof rootRoute
-    '/_layout': typeof LayoutRouteWithChildren
-    '/_layout/': typeof LayoutIndexRoute
+  __root__: typeof rootRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/shop': typeof LayoutShopRouteWithChildren
+  '/_layout/': typeof LayoutIndexRoute
+  '/_layout/shop/consumables': typeof LayoutShopConsumablesRoute
+  '/_layout/shop/': typeof LayoutShopIndexRoute
 }
 
 export interface FileRouteTypes {
-    fileRoutesByFullPath: FileRoutesByFullPath
-    fullPaths: '' | '/'
-    fileRoutesByTo: FileRoutesByTo
-    to: '/'
-    id: '__root__' | '/_layout' | '/_layout/'
-    fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '' | '/shop' | '/' | '/shop/consumables' | '/shop/'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/shop/consumables' | '/shop'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/shop'
+    | '/_layout/'
+    | '/_layout/shop/consumables'
+    | '/_layout/shop/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-    LayoutRoute: typeof LayoutRouteWithChildren
+  LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-    LayoutRoute: LayoutRouteWithChildren,
+  LayoutRoute: LayoutRouteWithChildren,
 }
 
-export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -106,12 +181,29 @@ export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileT
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
+        "/_layout/shop",
         "/_layout/"
+      ]
+    },
+    "/_layout/shop": {
+      "filePath": "_layout/shop.tsx",
+      "parent": "/_layout",
+      "children": [
+        "/_layout/shop/consumables",
+        "/_layout/shop/"
       ]
     },
     "/_layout/": {
       "filePath": "_layout/index.tsx",
       "parent": "/_layout"
+    },
+    "/_layout/shop/consumables": {
+      "filePath": "_layout/shop/consumables.tsx",
+      "parent": "/_layout/shop"
+    },
+    "/_layout/shop/": {
+      "filePath": "_layout/shop/index.tsx",
+      "parent": "/_layout/shop"
     }
   }
 }
