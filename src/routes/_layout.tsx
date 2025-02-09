@@ -3,8 +3,8 @@ import ReactHowler from 'react-howler'
 
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { hapticFeedback } from '@telegram-apps/sdk-react'
-import { motion } from 'framer-motion'
 import { useAtomValue } from 'jotai'
+import { motion } from 'motion/react'
 
 import { backgroundMusicAtom } from '@/shared/atoms'
 

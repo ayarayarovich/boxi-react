@@ -1,7 +1,7 @@
 import { useId, useMemo } from 'react'
 
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 import { cn } from '@/lib/utils'
 

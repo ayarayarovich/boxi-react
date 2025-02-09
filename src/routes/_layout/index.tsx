@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { hapticFeedback } from '@telegram-apps/sdk-react'
 import { TonConnectButton } from '@tonconnect/ui-react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
+import { usePlayModeInfoModal } from '@/shared/modals/play-mode-info-modal'
 import { CLICK_SOUND } from '@/shared/sounds'
 
 import { FlashIcon, GloveIcon, InfoIcon, ShareIcon, TonIcon } from '@/lib/icons'
@@ -13,6 +14,8 @@ export const Route = createFileRoute('/_layout/')({
 })
 
 function RouteComponent() {
+    const { open } = usePlayModeInfoModal()
+
     return (
         <div className='relative flex h-full flex-col gap-4 pt-2 pb-5'>
             <div className='absolute top-[35%] right-0 -z-10 aspect-square w-full -translate-y-1/2 translate-x-2/5 rounded-full bg-white/5'></div>
@@ -64,7 +67,12 @@ function RouteComponent() {
                                 <div className='text-xl leading-tight font-semibold uppercase'>
                                     High <br /> stake
                                 </div>
-                                <button type='button'>
+                                <button
+                                    type='button'
+                                    onClick={() => {
+                                        open({ name: 'bober' })
+                                    }}
+                                >
                                     <InfoIcon className='h-5' />
                                 </button>
                             </div>
