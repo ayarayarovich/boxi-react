@@ -1,3 +1,4 @@
+export { default as CrossIcon } from './sources/cross.svg?react'
 export { default as DownloadIcon } from './sources/download.svg?react'
 export { default as FlashIcon } from './sources/flash.svg?react'
 export { default as GloveIcon } from './sources/glove.svg?react'

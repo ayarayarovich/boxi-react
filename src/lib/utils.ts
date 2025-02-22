@@ -6,6 +6,15 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
+export function preloadImage(src: string) {
+    return new Promise((res, rej) => {
+        const img = new Image()
+        img.onload = res
+        img.onerror = rej
+        img.src = src
+    })
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function stopOverscroll(element?: any) {
     element = gsap.utils.toArray(element)[0] || window

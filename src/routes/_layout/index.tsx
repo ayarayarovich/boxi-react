@@ -3,18 +3,22 @@ import { hapticFeedback } from '@telegram-apps/sdk-react'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { motion } from 'motion/react'
 
-import { usePlayModeInfoModal } from '@/shared/modals/play-mode-info-modal'
+import { PlayModeInfoModal } from '@/shared/modals'
 import { CLICK_SOUND } from '@/shared/sounds'
 
 import { FlashIcon, GloveIcon, InfoIcon, ShareIcon, TonIcon } from '@/lib/icons'
-import { cn } from '@/lib/utils'
+import { cn, preloadImage } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout/')({
     component: RouteComponent,
+    loader: async () => {
+        const images = ['/tyson-1.png']
+        await Promise.all([images.map((v) => preloadImage(v))])
+    },
 })
 
 function RouteComponent() {
-    const { open } = usePlayModeInfoModal()
+    const playModeInfoModal = PlayModeInfoModal.use()
 
     return (
         <div className='relative flex h-full flex-col gap-4 pt-2 pb-5'>
@@ -68,9 +72,10 @@ function RouteComponent() {
                                     High <br /> stake
                                 </div>
                                 <button
+                                    className='-translate-y-2 translate-x-2 p-2'
                                     type='button'
                                     onClick={() => {
-                                        open({ name: 'bober' })
+                                        playModeInfoModal.open({ type: 'high-stake' })
                                     }}
                                 >
                                     <InfoIcon className='h-5' />

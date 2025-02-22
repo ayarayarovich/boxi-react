@@ -1,24 +1,47 @@
-import * as React from 'react'
-import { ModalProvider, ModalRenderer } from 'react-modal-state'
+import { useEffect } from 'react'
 
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext } from '@tanstack/react-router'
+import { useTonConnectUI } from '@tonconnect/ui-react'
 import { AnimatePresence } from 'motion/react'
 
-import PlayModeInfoModal from '@/shared/modals/play-mode-info-modal'
+import AnimatedOutlet from '@/shared/components/animated-outlet'
+import { PlayModeInfoModal, ShopPerkInfoModal } from '@/shared/modals'
+import { MyRouterContext } from '@/shared/router'
 
-export const Route = createRootRoute({
+import { ModalProvider, ModalRenderer } from '@/lib/ayarayarovich-modals'
+
+export const Route = createRootRouteWithContext<MyRouterContext>()({
     component: RootComponent,
 })
 
+function AnimatedPresence({ children }: React.PropsWithChildren) {
+    return <AnimatePresence mode='wait'>{children}</AnimatePresence>
+}
+
 function RootComponent() {
+    const [tonConnectUI] = useTonConnectUI()
+    useEffect(() => {
+        const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
+            console.log(wallet)
+        })
+        return () => unsubscribe()
+    }, [])
+
     return (
-        <React.Fragment>
+        <>
             <ModalProvider>
-                <Outlet />
-                <AnimatePresence mode='wait'>
-                    <ModalRenderer key='PlayModeInfoModal' Component={PlayModeInfoModal} />
-                </AnimatePresence>
+                <AnimatedOutlet />
+                <ModalRenderer
+                    key='PlayModeInfoModal.Component'
+                    Component={PlayModeInfoModal.Component}
+                    ComponentWrapper={AnimatedPresence}
+                />
+                <ModalRenderer
+                    key='ShopPerkInfoModal.Component'
+                    Component={ShopPerkInfoModal.Component}
+                    ComponentWrapper={AnimatedPresence}
+                />
             </ModalProvider>
-        </React.Fragment>
+        </>
     )
 }

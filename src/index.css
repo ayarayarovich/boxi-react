@@ -33,3 +33,13 @@ html {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
+// TonConnectButtonUI создает выпадающее меню при клике, которое выходит за границы экрана, если кнопка расположена слева (как у нас). Поэтому ручками хардкодим отступ слева.
+html [data-tc-dropdown-container] {
+    left: 20px !important;
+    background: red;
+}
+
+* {
+    @apply select-none;
+}

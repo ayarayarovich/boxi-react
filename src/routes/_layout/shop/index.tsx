@@ -1,46 +1,87 @@
 import { createFileRoute } from '@tanstack/react-router'
 
+import { ShopPerkInfoModal } from '@/shared/modals'
+
 import { GloveIcon, InfoIcon } from '@/lib/icons'
+import { preloadImage } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout/shop/')({
     component: RouteComponent,
+    loader: async () => {
+        const imagesToPreload = ['/damage.png', '/health.png', '/armour.png']
+        await Promise.all([imagesToPreload.map((v) => preloadImage(v))])
+    },
 })
 
 function RouteComponent() {
+    const shopPerkInfoModal = ShopPerkInfoModal.use()
     const items = [
         {
-            img: '/damage.png',
+            previewImg: '/damage.png',
             name: 'Attack',
-            current: 75,
-            max: 100,
+            type: 'attack' as const,
+            progress: {
+                current: 32,
+                max: 100,
+            },
+            details: 'Fugiat mollit deserunt in ipsum mollit veniam tempor proident labore aute laborum.',
             price: 100,
+            currency: 'boxi' as const,
             color: '#A8212D',
         },
         {
-            img: '/health.png',
+            previewImg: '/health.png',
             name: 'Max Health',
-            current: 12,
-            max: 100,
+            type: 'max-health' as const,
+            progress: {
+                current: 75,
+                max: 100,
+            },
+            details: 'Tempor ut qui veniam consectetur. Consequat et commodo anim veniam sint.',
             price: 100,
+            currency: 'boxi' as const,
             color: '#48A52B',
         },
         {
-            img: '/damage.png',
-            name: 'Attack',
-            current: 32,
-            max: 100,
+            previewImg: '/armour.png',
+            type: 'shield' as const,
+            name: 'Shield',
+            progress: {
+                current: 91,
+                max: 100,
+            },
+            details: 'Do aliqua voluptate ea laborum ipsum ad deserunt duis ipsum labore.',
             price: 100,
+            currency: 'boxi' as const,
             color: '#02BBFF',
         },
     ]
     return (
-        <div className='relative flex grow flex-col items-stretch gap-4 px-5'>
+        <div className='relative flex h-full flex-col items-stretch gap-4 px-5'>
             {items.map((v) => (
                 <div className='rounded-lg border border-[#292929] p-4'>
                     <div className='mb-4 flex items-center gap-4'>
                         <div className='relative shrink-0 grow-0'>
-                            <img src={v.img} className='w-13 rounded-lg' alt='' />
-                            <button type='button' className='absolute top-0 right-0 -translate-y-1/2 translate-x-1/2'>
+                            <img src={v.previewImg} className='w-13 rounded-lg' alt='' />
+                            <button
+                                type='button'
+                                className='absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 p-2'
+                                onClick={() =>
+                                    shopPerkInfoModal.open({
+                                        title: v.name,
+                                        currency: v.currency,
+                                        details: v.details,
+                                        previewImg: v.previewImg,
+                                        price: v.price,
+                                        type: v.type,
+                                        progress: {
+                                            current: v.progress.current,
+                                            max: v.progress.max,
+                                        },
+                                        color: v.color,
+                                    })
+                                }
+                            >
                                 <InfoIcon className='size-5' />
                             </button>
                         </div>
@@ -48,9 +89,9 @@ function RouteComponent() {
                             <div>{v.name}</div>
                             <div>
                                 <span className='font-semibold' style={{ color: v.color }}>
-                                    {v.current}{' '}
+                                    {v.progress.current}{' '}
                                 </span>
-                                <span className='text-white/30'>/ {v.max}</span>
+                                <span className='text-white/30'>/ {v.progress.max}</span>
                             </div>
                         </div>
                         <button
@@ -62,10 +103,13 @@ function RouteComponent() {
                         </button>
                     </div>
                     <div className='relative'>
-                        <div className='relative h-1' style={{ backgroundColor: v.color, width: (v.current / v.max) * 100 + '%' }}></div>
+                        <div
+                            className='relative h-1'
+                            style={{ backgroundColor: v.color, width: (v.progress.current / v.progress.max) * 100 + '%' }}
+                        ></div>
                         <div
                             className='absolute top-0 left-0 h-1 blur-md'
-                            style={{ backgroundColor: v.color, width: (v.current / v.max) * 100 + '%' }}
+                            style={{ backgroundColor: v.color, width: (v.progress.current / v.progress.max) * 100 + '%' }}
                         ></div>
                         <div className='absolute inset-x-0 top-1/2 -z-10 h-px -translate-y-1/2 bg-white/30'></div>
                     </div>

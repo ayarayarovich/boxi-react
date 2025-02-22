@@ -1,18 +1,23 @@
 import { useId, useMemo } from 'react'
 import ReactHowler from 'react-howler'
 
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { hapticFeedback } from '@telegram-apps/sdk-react'
 import { useAtomValue } from 'jotai'
 import { motion } from 'motion/react'
 
 import { backgroundMusicAtom } from '@/shared/atoms'
+import AnimatedOutlet from '@/shared/components/animated-outlet'
+import Queries from '@/shared/queries'
 
 import { PlayIcon, ShopIcon } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout')({
     component: RouteComponent,
+    loader: async ({ context }) => {
+        await Promise.all([context.qc.prefetchQuery(Queries.me.self)])
+    },
 })
 
 function RouteComponent() {
@@ -42,7 +47,7 @@ function RouteComponent() {
                     paddingBottom: 'calc(var(--content-safe-inset-bottom) + 4.75rem + 1px)',
                 }}
             >
-                <Outlet />
+                <AnimatedOutlet />
             </div>
 
             <div className='bg-dark-elevated absolute inset-x-0 bottom-0 overflow-hidden rounded-t-3xl border border-b-0 border-[#292929] text-xs text-[#e6e6e6]'>

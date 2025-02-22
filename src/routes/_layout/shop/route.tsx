@@ -1,7 +1,9 @@
 import { useId, useMemo } from 'react'
 
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { motion } from 'motion/react'
+
+import AnimatedOutlet from '@/shared/components/animated-outlet'
 
 import { cn } from '@/lib/utils'
 
@@ -43,7 +45,7 @@ function RouteComponent() {
                     )}
                 </Link>
             </div>
-            <Outlet />
+            <AnimatedOutlet />
         </div>
     )
 }
