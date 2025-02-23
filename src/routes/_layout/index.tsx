@@ -4,6 +4,7 @@ import { hapticFeedback } from '@telegram-apps/sdk-react'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { motion } from 'motion/react'
 
+import { Button } from '@/shared/components/ui'
 import { PlayModeInfoModal } from '@/shared/modals'
 import Queries from '@/shared/queries'
 import { CLICK_SOUND } from '@/shared/sounds'
@@ -76,7 +77,7 @@ function RouteComponent() {
                                 <div className='text-xl leading-tight font-semibold uppercase'>
                                     High <br /> stake
                                 </div>
-                                <button
+                                <Button
                                     className='-translate-y-2 translate-x-2 p-2'
                                     type='button'
                                     onClick={() => {
@@ -84,7 +85,7 @@ function RouteComponent() {
                                     }}
                                 >
                                     <InfoIcon className='h-5' />
-                                </button>
+                                </Button>
                             </div>
                             <div>
                                 <div className='flex items-center gap-1.5 font-semibold'>

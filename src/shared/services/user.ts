@@ -7,7 +7,7 @@ const store = {
 }
 
 export const login = async (payload: { initData: string }) => {
-    const response = await S_PUBLIC_AXIOS.post('/api/token', {
+    const response = await S_PUBLIC_AXIOS.post<unknown>('/api/token', {
         initData: payload.initData,
     })
 
@@ -36,12 +36,12 @@ interface UpdateTonWalletPayload {
     wallet: string
 }
 export const updateTonWallet = async (payload: UpdateTonWalletPayload) => {
-    const response = await S_PRIVATE_AXIOS.post('/api/wallet', payload)
+    const response = await S_PRIVATE_AXIOS.post<unknown>('/api/wallet', payload)
     return response.data
 }
 
 export const getMe = async () => {
-    const response = await S_PRIVATE_AXIOS.get('/api/me')
+    const response = await S_PRIVATE_AXIOS.get<unknown>('/api/me')
     const data = z
         .object({
             balance: z.string(),
@@ -72,7 +72,7 @@ export const getMe = async () => {
 }
 
 export const getPerks = async () => {
-    const response = await S_PRIVATE_AXIOS.get('/api/perks')
+    const response = await S_PRIVATE_AXIOS.get<unknown>('/api/perks')
     const data = z
         .object({
             boxi: z.string(),
@@ -91,4 +91,12 @@ export const getPerks = async () => {
         })
         .parse(response.data)
     return data
+}
+
+interface UpgradePerkPayload {
+    type: 'health' | 'shield' | 'damage'
+}
+export const upgradePerk = async (payload: UpgradePerkPayload) => {
+    const response = await S_PRIVATE_AXIOS.post<unknown>('/api/perk/upgrade', payload)
+    return response.data
 }
