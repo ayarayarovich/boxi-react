@@ -1,9 +1,11 @@
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { hapticFeedback } from '@telegram-apps/sdk-react'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { motion } from 'motion/react'
 
 import { PlayModeInfoModal } from '@/shared/modals'
+import Queries from '@/shared/queries'
 import { CLICK_SOUND } from '@/shared/sounds'
 
 import { FlashIcon, GloveIcon, InfoIcon, ShareIcon, TonIcon } from '@/lib/icons'
@@ -19,6 +21,9 @@ export const Route = createFileRoute('/_layout/')({
 
 function RouteComponent() {
     const playModeInfoModal = PlayModeInfoModal.use()
+
+    const meData = useSuspenseQuery(Queries.me.self)
+    console.log(meData)
 
     return (
         <div className='relative flex h-full flex-col gap-4 pt-2 pb-5'>
