@@ -3,6 +3,15 @@ import { useStopwatch } from 'react-timer-hook'
 
 import { AnimatePresence, motion, Variants } from 'motion/react'
 
+const variants: Variants = {
+    hidden: {
+        opacity: 0,
+    },
+    visible: {
+        opacity: 0.75,
+    },
+}
+
 export default function PendingComponent() {
     const sw = useStopwatch({ autoStart: true })
     const message = useMemo(() => {
@@ -20,18 +29,7 @@ export default function PendingComponent() {
         }
         return ''
     }, [sw.totalSeconds])
-    const variants = useMemo(
-        () =>
-            ({
-                hidden: {
-                    opacity: 0,
-                },
-                visible: {
-                    opacity: 0.75,
-                },
-            }) satisfies Variants,
-        [],
-    )
+
     return (
         <div className='flex h-screen max-h-full flex-col items-center justify-center p-16'>
             <div className='mb-3 size-8 animate-spin rounded-full border-4 border-y-transparent'></div>
