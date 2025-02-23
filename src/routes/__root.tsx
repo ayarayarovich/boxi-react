@@ -6,7 +6,7 @@ import { useTonConnectUI } from '@tonconnect/ui-react'
 import { AnimatePresence } from 'motion/react'
 
 import AnimatedOutlet from '@/shared/components/animated-outlet'
-import { ErrorModal, PlayModeInfoModal, ShopPerkInfoModal } from '@/shared/modals'
+import { ErrorModal, MessageModal, PlayModeInfoModal, ShopPerkInfoModal } from '@/shared/modals'
 import { MyRouterContext } from '@/shared/router'
 import { UserService } from '@/shared/services'
 
@@ -41,6 +41,7 @@ function RootComponent() {
             }
         })
         return () => unsubscribe()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -49,6 +50,7 @@ function RootComponent() {
             <ModalRenderer key='PlayModeInfoModal.Component' Component={PlayModeInfoModal.Component} ComponentWrapper={AnimatedPresence} />
             <ModalRenderer key='ShopPerkInfoModal.Component' Component={ShopPerkInfoModal.Component} ComponentWrapper={AnimatedPresence} />
             <ModalRenderer key='ErrorModal.Component' Component={ErrorModal.Component} ComponentWrapper={AnimatedPresence} />
+            <ModalRenderer key='MessageModal.Component' Component={MessageModal.Component} ComponentWrapper={AnimatedPresence} />
         </>
     )
 }
