@@ -20,7 +20,7 @@ S_PRIVATE_AXIOS.interceptors.request.use(
     (request) => {
         const accessToken = UserService.getToken()
         if (accessToken) {
-            request.headers.Authorization = `${accessToken}`
+            request.headers.Authorization = `Bearer ${accessToken}`
         }
         return request
     },
