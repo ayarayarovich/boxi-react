@@ -1,31 +1,35 @@
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { ShopPerkInfoModal } from '@/shared/modals'
+import Queries from '@/shared/queries'
 
 import { GloveIcon, InfoIcon } from '@/lib/icons'
 import { preloadImage } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout/shop/')({
     component: RouteComponent,
-    loader: async () => {
+    loader: async ({ context }) => {
         const imagesToPreload = ['/damage.png', '/health.png', '/armour.png']
-        await Promise.all([imagesToPreload.map((v) => preloadImage(v))])
+        await Promise.all([imagesToPreload.map((v) => preloadImage(v)), context.qc.prefetchQuery(Queries.me.perks)])
     },
 })
 
 function RouteComponent() {
     const shopPerkInfoModal = ShopPerkInfoModal.use()
+    const perksQuery = useSuspenseQuery(Queries.me.perks)
+
     const items = [
         {
             previewImg: '/damage.png',
             name: 'Attack',
             type: 'attack' as const,
             progress: {
-                current: 32,
-                max: 100,
+                current: perksQuery.data.my_damage,
+                max: perksQuery.data.max_damage,
             },
-            details: 'Fugiat mollit deserunt in ipsum mollit veniam tempor proident labore aute laborum.',
-            price: 100,
+            details: perksQuery.data.damage_description,
+            price: perksQuery.data.damage_price,
             currency: 'boxi' as const,
             color: '#A8212D',
         },
@@ -34,11 +38,11 @@ function RouteComponent() {
             name: 'Max Health',
             type: 'max-health' as const,
             progress: {
-                current: 75,
-                max: 100,
+                current: perksQuery.data.my_health,
+                max: perksQuery.data.max_health,
             },
-            details: 'Tempor ut qui veniam consectetur. Consequat et commodo anim veniam sint.',
-            price: 100,
+            details: perksQuery.data.health_description,
+            price: perksQuery.data.health_price,
             currency: 'boxi' as const,
             color: '#48A52B',
         },
@@ -47,11 +51,11 @@ function RouteComponent() {
             type: 'shield' as const,
             name: 'Shield',
             progress: {
-                current: 91,
-                max: 100,
+                current: perksQuery.data.my_shield,
+                max: perksQuery.data.max_shield,
             },
-            details: 'Do aliqua voluptate ea laborum ipsum ad deserunt duis ipsum labore.',
-            price: 100,
+            details: perksQuery.data.shield_description,
+            price: perksQuery.data.shield_price,
             currency: 'boxi' as const,
             color: '#02BBFF',
         },
@@ -118,7 +122,7 @@ function RouteComponent() {
 
             <div className='absolute bottom-0 left-1/2 flex -translate-x-1/2 items-center rounded-full border border-[#292929] px-6 py-4'>
                 <GloveIcon className='mr-3 size-5 shrink-0 grow-0' />
-                <div className='mr-2 font-semibold'>1.4M</div>
+                <div className='mr-2 font-semibold'>{perksQuery.data.boxi}</div>
                 <div className='text-white/30'>$BOXI</div>
             </div>
         </div>

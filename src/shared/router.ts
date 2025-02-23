@@ -3,6 +3,7 @@ import { routeTree } from '@/routeTree.gen'
 import { QueryClient } from '@tanstack/react-query'
 import { createMemoryHistory, createRouter } from '@tanstack/react-router'
 
+import ErrorComponent from '@/shared/components/error-component'
 import PendingComponent from '@/shared/components/pending-component'
 import { queryClient } from '@/shared/queries'
 
@@ -20,6 +21,7 @@ export const router = createRouter({
         qc: queryClient,
     },
     defaultPendingComponent: PendingComponent,
+    defaultErrorComponent: ErrorComponent,
     defaultPendingMs: 0,
 })
 

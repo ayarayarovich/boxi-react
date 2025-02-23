@@ -70,3 +70,25 @@ export const getMe = async () => {
         .parse(response.data)
     return data
 }
+
+export const getPerks = async () => {
+    const response = await S_PRIVATE_AXIOS.get('/api/perks')
+    const data = z
+        .object({
+            boxi: z.string(),
+            damage_description: z.string(),
+            damage_price: z.number(),
+            health_description: z.string(),
+            health_price: z.number(),
+            max_damage: z.number(),
+            max_health: z.number(),
+            max_shield: z.number(),
+            my_damage: z.number(),
+            my_health: z.number(),
+            my_shield: z.number(),
+            shield_description: z.string(),
+            shield_price: z.number(),
+        })
+        .parse(response.data)
+    return data
+}
