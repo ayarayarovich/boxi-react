@@ -15,6 +15,10 @@ export function preloadImage(src: string) {
     })
 }
 
+export function preloadImages(srcs: string[]) {
+    return Promise.all(srcs.map((v) => preloadImage(v)))
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function stopOverscroll(element?: any) {
     element = gsap.utils.toArray(element)[0] || window

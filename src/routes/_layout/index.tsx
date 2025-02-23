@@ -10,13 +10,12 @@ import Queries from '@/shared/queries'
 import { CLICK_SOUND } from '@/shared/sounds'
 
 import { FlashIcon, GloveIcon, InfoIcon, ShareIcon, TonIcon } from '@/lib/icons'
-import { cn, preloadImage } from '@/lib/utils'
+import { cn, preloadImages } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout/')({
     component: RouteComponent,
     loader: async () => {
-        const images = ['/tyson-1.png']
-        await Promise.all([images.map((v) => preloadImage(v))])
+        await Promise.all([preloadImages(['/tyson-breathing.gif'])])
     },
 })
 
@@ -31,7 +30,7 @@ function RouteComponent() {
             <div className='absolute top-[35%] right-0 -z-10 aspect-square w-full -translate-y-1/2 translate-x-2/5 rounded-full bg-white/5'></div>
             <img
                 className='absolute top-2 right-0 -z-10 h-[80%] max-w-none translate-x-2/5'
-                src='/tyson-1.png'
+                src='/tyson-breathing.gif'
                 style={{
                     maskImage: 'linear-gradient(black 80%, transparent)',
                 }}

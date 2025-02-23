@@ -8,14 +8,13 @@ import { ShopPerkInfoModal } from '@/shared/modals'
 import Queries from '@/shared/queries'
 
 import { GloveIcon, InfoIcon } from '@/lib/icons'
-import { cn, preloadImage } from '@/lib/utils'
+import { cn, preloadImages } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout/shop/')({
     component: RouteComponent,
     loader: async ({ context }) => {
-        const imagesToPreload = ['/damage.png', '/health.png', '/armour.png']
         await Promise.all([
-            imagesToPreload.map((v) => preloadImage(v)),
+            preloadImages(['/damage.png', '/health.png', '/armour.png']),
             context.qc.prefetchQuery(Queries.me.perks),
             context.qc.prefetchQuery(Queries.me.self),
         ])
