@@ -18,6 +18,6 @@ export default defineConfig({
         allowedHosts: ['.ayarayarovich.ru'],
     },
     define: {
-        __COMMIT_HASH__: commitHash,
+        __COMMIT_HASH__: '"' + commitHash + '"',
     },
 })
