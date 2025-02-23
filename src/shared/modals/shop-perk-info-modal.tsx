@@ -1,15 +1,22 @@
 import { Dialog, Modal, ModalOverlay } from 'react-aria-components'
 
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'motion/react'
+
+import { useUpgradePerkAction } from '@/shared/actions'
+import { Button } from '@/shared/components/ui'
 
 import { useModalInstance } from '@/lib/ayarayarovich-modals'
 import { CrossIcon, GloveIcon } from '@/lib/icons'
+import { cn } from '@/lib/utils'
+
+import Queries from '../queries'
 
 const MotionModal = motion.create(Modal)
 const MotionModalOverlay = motion.create(ModalOverlay)
 
 export interface Data {
-    type: 'attack' | 'max-health' | 'shield'
+    type: 'damage' | 'health' | 'shield'
     previewImg: string
     title: string
     details: string
@@ -24,6 +31,39 @@ export interface Data {
 
 export default function ShopPerkInfoModalComponent() {
     const { isOpen, close, data } = useModalInstance<Data>()
+    const perkQuery = useSuspenseQuery({
+        ...Queries.me.perks,
+        select: (v) => {
+            if (data.type === 'health') {
+                return {
+                    price: v.health_price,
+                    current: v.my_health,
+                    max: v.max_health,
+                }
+            }
+            if (data.type === 'damage') {
+                return {
+                    price: v.damage_price,
+                    current: v.my_damage,
+                    max: v.max_damage,
+                }
+            }
+            if (data.type === 'shield') {
+                return {
+                    price: v.shield_price,
+                    current: v.my_shield,
+                    max: v.max_shield,
+                }
+            }
+            return {
+                price: 0,
+                current: 0,
+                max: 0,
+            }
+        },
+    })
+    const upgradePerkAction = useUpgradePerkAction(data.type)
+    const isMaxLevel = perkQuery.data.current >= perkQuery.data.max
     return (
         <>
             <AnimatePresence>
@@ -94,36 +134,57 @@ export default function ShopPerkInfoModalComponent() {
                                                 <div>
                                                     <div className='relative mb-2'>
                                                         <div
-                                                            className='relative z-10 h-1.5'
+                                                            className='relative z-10 h-1.5 transition-all'
                                                             style={{
                                                                 backgroundColor: data.color,
-                                                                width: (data.progress.current / data.progress.max) * 100 + '%',
+                                                                width: (perkQuery.data.current / perkQuery.data.max) * 100 + '%',
                                                             }}
                                                         ></div>
                                                         <div
-                                                            className='absolute top-0 left-0 h-1.5 blur-md'
+                                                            className='absolute top-0 left-0 h-1.5 blur-md transition-all'
                                                             style={{
                                                                 backgroundColor: data.color,
-                                                                width: (data.progress.current / data.progress.max) * 100 + '%',
+                                                                width: (perkQuery.data.current / perkQuery.data.max) * 100 + '%',
                                                             }}
                                                         ></div>
                                                         <div className='absolute inset-x-0 top-1/2 z-0 h-px -translate-y-1/2 bg-white/30'></div>
                                                     </div>
                                                     <p>
                                                         <span className='font-semibold' style={{ color: data.color }}>
-                                                            {data.progress.current}
+                                                            {perkQuery.data.current}
                                                         </span>{' '}
-                                                        <span className='opacity-30'>points out of {data.progress.max}</span>
+                                                        <span className='opacity-30'>points out of {perkQuery.data.max}</span>
                                                     </p>
                                                 </div>
 
-                                                <button
+                                                <Button
                                                     type='button'
-                                                    className='flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2 font-semibold text-black'
+                                                    className='relative flex items-center justify-center rounded-lg bg-white px-4 py-2 leading-none font-semibold text-black'
+                                                    onClick={() => upgradePerkAction.mutation.mutate()}
+                                                    disabled={upgradePerkAction.isMutating || isMaxLevel}
                                                 >
-                                                    {data.currency === 'boxi' && <GloveIcon className='h-[1.5em]' />}
-                                                    {data.price}
-                                                </button>
+                                                    {isMaxLevel ? (
+                                                        <div className='flex min-h-[1.5em] items-center justify-center'>MAX</div>
+                                                    ) : (
+                                                        <>
+                                                            <div
+                                                                className={cn(
+                                                                    'absolute top-1/2 left-1/2 size-[1em] -translate-x-1/2 -translate-y-1/2 scale-50 animate-spin rounded-full border-2 border-t-transparent opacity-0 transition-all',
+                                                                    upgradePerkAction.isMutating && 'scale-100 opacity-100',
+                                                                )}
+                                                            ></div>
+                                                            <div
+                                                                className={cn(
+                                                                    'flex scale-100 items-center gap-2 transition-all',
+                                                                    upgradePerkAction.isMutating && 'scale-50 opacity-0',
+                                                                )}
+                                                            >
+                                                                <GloveIcon className='h-[1.5em]' />
+                                                                {perkQuery.data.price}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </Button>
                                             </>
                                         )}
                                     </Dialog>

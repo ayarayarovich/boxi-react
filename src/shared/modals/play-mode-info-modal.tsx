@@ -2,6 +2,8 @@ import { Dialog, Modal, ModalOverlay } from 'react-aria-components'
 
 import { AnimatePresence, motion } from 'motion/react'
 
+import { Button } from '@/shared/components/ui'
+
 import { useModalInstance } from '@/lib/ayarayarovich-modals'
 import { CrossIcon, FlashIcon, GloveIcon, TonIcon } from '@/lib/icons'
 
@@ -94,9 +96,9 @@ export default function PlayModeInfoModalComponent() {
                                                     </div>
                                                 </div>
 
-                                                <button type='button' className='rounded-lg bg-white px-4 py-2 font-semibold text-black'>
+                                                <Button type='button' className='rounded-lg bg-white px-4 py-2 font-semibold text-black'>
                                                     Play
-                                                </button>
+                                                </Button>
                                             </>
                                         )}
                                     </Dialog>
