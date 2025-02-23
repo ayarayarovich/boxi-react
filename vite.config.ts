@@ -8,7 +8,7 @@ import { defineConfig } from 'vite'
 import svgr from 'vite-plugin-svgr'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
-const commitHash = cp.execSync('git rev-parse --short HEAD').toString()
+const commitHash = cp.execSync('git rev-parse --short HEAD').toString().trim()
 
 // https://vite.dev/config/
 export default defineConfig({
