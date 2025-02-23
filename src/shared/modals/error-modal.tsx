@@ -83,11 +83,12 @@ export default function PlayModeInfoModalComponent() {
                                                     Something went wrong. Contact with administrator.
                                                 </div>
                                                 <div className='text-center text-sm opacity-50'>Trace ID: {data.traceId}</div>
+                                                <div className='text-center text-sm opacity-50'>Build: {__COMMIT_HASH__}</div>
 
                                                 <button
                                                     type='button'
                                                     onClick={sendTraceId}
-                                                    className='mt-8 rounded-lg bg-white px-4 py-2 font-semibold text-black'
+                                                    className='mt-4 rounded-lg bg-white px-4 py-2 font-semibold text-black'
                                                 >
                                                     Contact
                                                 </button>
