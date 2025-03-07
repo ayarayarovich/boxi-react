@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext } from '@tanstack/react-router'
 import { useTonConnectUI } from '@tonconnect/ui-react'
-import { AnimatePresence } from 'motion/react'
 
 import AnimatedOutlet from '@/shared/components/animated-outlet'
 import { ErrorModal, MessageModal, PlayModeInfoModal, ShopPerkInfoModal } from '@/shared/modals'
@@ -15,10 +14,6 @@ import { ModalRenderer } from '@/lib/ayarayarovich-modals'
 export const Route = createRootRouteWithContext<MyRouterContext>()({
     component: RootComponent,
 })
-
-function AnimatedPresence({ children }: React.PropsWithChildren) {
-    return <AnimatePresence mode='wait'>{children}</AnimatePresence>
-}
 
 function RootComponent() {
     const qc = useQueryClient()
@@ -47,10 +42,10 @@ function RootComponent() {
     return (
         <>
             <AnimatedOutlet />
-            <ModalRenderer key='PlayModeInfoModal.Component' Component={PlayModeInfoModal.Component} ComponentWrapper={AnimatedPresence} />
-            <ModalRenderer key='ShopPerkInfoModal.Component' Component={ShopPerkInfoModal.Component} ComponentWrapper={AnimatedPresence} />
-            <ModalRenderer key='ErrorModal.Component' Component={ErrorModal.Component} ComponentWrapper={AnimatedPresence} />
-            <ModalRenderer key='MessageModal.Component' Component={MessageModal.Component} ComponentWrapper={AnimatedPresence} />
+            <ModalRenderer key='PlayModeInfoModal.Component' Component={PlayModeInfoModal.Component} />
+            <ModalRenderer key='ShopPerkInfoModal.Component' Component={ShopPerkInfoModal.Component} />
+            <ModalRenderer key='ErrorModal.Component' Component={ErrorModal.Component} />
+            <ModalRenderer key='MessageModal.Component' Component={MessageModal.Component} />
         </>
     )
 }

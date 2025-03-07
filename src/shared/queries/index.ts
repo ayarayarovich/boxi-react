@@ -13,6 +13,10 @@ const me = createQueryKeys('me', {
         queryKey: null,
         queryFn: UserService.getPerks,
     },
+    products: {
+        queryKey: null,
+        queryFn: UserService.getProducts,
+    },
 })
 
 const Queries = mergeQueryKeys(me)

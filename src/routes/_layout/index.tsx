@@ -21,9 +21,9 @@ export const Route = createFileRoute('/_layout/')({
 
 function RouteComponent() {
     const playModeInfoModal = PlayModeInfoModal.use()
+    const navigate = Route.useNavigate()
 
-    const meData = useSuspenseQuery(Queries.me.self)
-    console.log(meData)
+    const meQuery = useSuspenseQuery(Queries.me.self)
 
     return (
         <div className='relative flex h-full flex-col gap-4 pt-2 pb-5'>
@@ -42,19 +42,19 @@ function RouteComponent() {
                 <div className='mb-4 flex items-center font-semibold'>
                     <GloveIcon className='mr-2 size-[1.25em]' />
                     <p>
-                        1.4M $BOXI <span className='font-normal opacity-30'>≈ 0.1 BTC</span>
+                        {meQuery.data.boxi} $BOXI <span className='font-normal opacity-30'>≈ {meQuery.data.boxi_to_usdt} USDT</span>
                     </p>
                 </div>
                 <div className='mb-4 flex items-center font-semibold'>
                     <FlashIcon className='text-yellow mr-2 size-[1.25em]' />
                     <p>
-                        10 / 100 <span className='font-normal opacity-30'>Energy</span>
+                        {meQuery.data.energy} <span className='font-normal opacity-30'>Energy</span>
                     </p>
                 </div>
                 <div className='mb-4 flex items-center font-semibold'>
                     <TonIcon className='mr-2 size-[1.25em]' />
                     <p>
-                        4.5K <span className='font-normal opacity-30'>TON</span>
+                        {meQuery.data.boxi_to_ton} <span className='font-normal opacity-30'>TON</span>
                     </p>
                 </div>
             </div>
@@ -103,6 +103,7 @@ function RouteComponent() {
                                 onClick={() => {
                                     CLICK_SOUND.play()
                                     hapticFeedback.impactOccurred('soft')
+                                    navigate({ to: '/game' })
                                 }}
                             >
                                 <span className='mr-2'>Play</span>

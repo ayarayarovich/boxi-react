@@ -12,15 +12,25 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as GameIndexImport } from './routes/game/index'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutShopRouteImport } from './routes/_layout/shop/route'
+import { Route as LayoutProfileRouteImport } from './routes/_layout/profile/route'
 import { Route as LayoutShopIndexImport } from './routes/_layout/shop/index'
+import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
 import { Route as LayoutShopConsumablesImport } from './routes/_layout/shop/consumables'
+import { Route as LayoutProfileReferralsImport } from './routes/_layout/profile/referrals'
 
 // Create/Update Routes
 
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GameIndexRoute = GameIndexImport.update({
+  id: '/game/',
+  path: '/game/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -36,16 +46,34 @@ const LayoutShopRouteRoute = LayoutShopRouteImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutProfileRouteRoute = LayoutProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutShopIndexRoute = LayoutShopIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => LayoutShopRouteRoute,
 } as any)
 
+const LayoutProfileIndexRoute = LayoutProfileIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LayoutProfileRouteRoute,
+} as any)
+
 const LayoutShopConsumablesRoute = LayoutShopConsumablesImport.update({
   id: '/consumables',
   path: '/consumables',
   getParentRoute: () => LayoutShopRouteRoute,
+} as any)
+
+const LayoutProfileReferralsRoute = LayoutProfileReferralsImport.update({
+  id: '/referrals',
+  path: '/referrals',
+  getParentRoute: () => LayoutProfileRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -58,6 +86,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
+    }
+    '/_layout/profile': {
+      id: '/_layout/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof LayoutProfileRouteImport
+      parentRoute: typeof LayoutImport
     }
     '/_layout/shop': {
       id: '/_layout/shop'
@@ -73,12 +108,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/game/': {
+      id: '/game/'
+      path: '/game'
+      fullPath: '/game'
+      preLoaderRoute: typeof GameIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_layout/profile/referrals': {
+      id: '/_layout/profile/referrals'
+      path: '/referrals'
+      fullPath: '/profile/referrals'
+      preLoaderRoute: typeof LayoutProfileReferralsImport
+      parentRoute: typeof LayoutProfileRouteImport
+    }
     '/_layout/shop/consumables': {
       id: '/_layout/shop/consumables'
       path: '/consumables'
       fullPath: '/shop/consumables'
       preLoaderRoute: typeof LayoutShopConsumablesImport
       parentRoute: typeof LayoutShopRouteImport
+    }
+    '/_layout/profile/': {
+      id: '/_layout/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof LayoutProfileIndexImport
+      parentRoute: typeof LayoutProfileRouteImport
     }
     '/_layout/shop/': {
       id: '/_layout/shop/'
@@ -91,6 +147,19 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
+
+interface LayoutProfileRouteRouteChildren {
+  LayoutProfileReferralsRoute: typeof LayoutProfileReferralsRoute
+  LayoutProfileIndexRoute: typeof LayoutProfileIndexRoute
+}
+
+const LayoutProfileRouteRouteChildren: LayoutProfileRouteRouteChildren = {
+  LayoutProfileReferralsRoute: LayoutProfileReferralsRoute,
+  LayoutProfileIndexRoute: LayoutProfileIndexRoute,
+}
+
+const LayoutProfileRouteRouteWithChildren =
+  LayoutProfileRouteRoute._addFileChildren(LayoutProfileRouteRouteChildren)
 
 interface LayoutShopRouteRouteChildren {
   LayoutShopConsumablesRoute: typeof LayoutShopConsumablesRoute
@@ -107,11 +176,13 @@ const LayoutShopRouteRouteWithChildren = LayoutShopRouteRoute._addFileChildren(
 )
 
 interface LayoutRouteChildren {
+  LayoutProfileRouteRoute: typeof LayoutProfileRouteRouteWithChildren
   LayoutShopRouteRoute: typeof LayoutShopRouteRouteWithChildren
   LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutProfileRouteRoute: LayoutProfileRouteRouteWithChildren,
   LayoutShopRouteRoute: LayoutShopRouteRouteWithChildren,
   LayoutIndexRoute: LayoutIndexRoute,
 }
@@ -121,48 +192,80 @@ const LayoutRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof LayoutRouteWithChildren
+  '/profile': typeof LayoutProfileRouteRouteWithChildren
   '/shop': typeof LayoutShopRouteRouteWithChildren
   '/': typeof LayoutIndexRoute
+  '/game': typeof GameIndexRoute
+  '/profile/referrals': typeof LayoutProfileReferralsRoute
   '/shop/consumables': typeof LayoutShopConsumablesRoute
+  '/profile/': typeof LayoutProfileIndexRoute
   '/shop/': typeof LayoutShopIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof LayoutIndexRoute
+  '/game': typeof GameIndexRoute
+  '/profile/referrals': typeof LayoutProfileReferralsRoute
   '/shop/consumables': typeof LayoutShopConsumablesRoute
+  '/profile': typeof LayoutProfileIndexRoute
   '/shop': typeof LayoutShopIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_layout': typeof LayoutRouteWithChildren
+  '/_layout/profile': typeof LayoutProfileRouteRouteWithChildren
   '/_layout/shop': typeof LayoutShopRouteRouteWithChildren
   '/_layout/': typeof LayoutIndexRoute
+  '/game/': typeof GameIndexRoute
+  '/_layout/profile/referrals': typeof LayoutProfileReferralsRoute
   '/_layout/shop/consumables': typeof LayoutShopConsumablesRoute
+  '/_layout/profile/': typeof LayoutProfileIndexRoute
   '/_layout/shop/': typeof LayoutShopIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/shop' | '/' | '/shop/consumables' | '/shop/'
+  fullPaths:
+    | ''
+    | '/profile'
+    | '/shop'
+    | '/'
+    | '/game'
+    | '/profile/referrals'
+    | '/shop/consumables'
+    | '/profile/'
+    | '/shop/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/shop/consumables' | '/shop'
+  to:
+    | '/'
+    | '/game'
+    | '/profile/referrals'
+    | '/shop/consumables'
+    | '/profile'
+    | '/shop'
   id:
     | '__root__'
     | '/_layout'
+    | '/_layout/profile'
     | '/_layout/shop'
     | '/_layout/'
+    | '/game/'
+    | '/_layout/profile/referrals'
     | '/_layout/shop/consumables'
+    | '/_layout/profile/'
     | '/_layout/shop/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRouteWithChildren
+  GameIndexRoute: typeof GameIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
+  GameIndexRoute: GameIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -175,14 +278,24 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/_layout"
+        "/_layout",
+        "/game/"
       ]
     },
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
+        "/_layout/profile",
         "/_layout/shop",
         "/_layout/"
+      ]
+    },
+    "/_layout/profile": {
+      "filePath": "_layout/profile/route.tsx",
+      "parent": "/_layout",
+      "children": [
+        "/_layout/profile/referrals",
+        "/_layout/profile/"
       ]
     },
     "/_layout/shop": {
@@ -197,9 +310,20 @@ export const routeTree = rootRoute
       "filePath": "_layout/index.tsx",
       "parent": "/_layout"
     },
+    "/game/": {
+      "filePath": "game/index.tsx"
+    },
+    "/_layout/profile/referrals": {
+      "filePath": "_layout/profile/referrals.tsx",
+      "parent": "/_layout/profile"
+    },
     "/_layout/shop/consumables": {
       "filePath": "_layout/shop/consumables.tsx",
       "parent": "/_layout/shop"
+    },
+    "/_layout/profile/": {
+      "filePath": "_layout/profile/index.tsx",
+      "parent": "/_layout/profile"
     },
     "/_layout/shop/": {
       "filePath": "_layout/shop/index.tsx",
