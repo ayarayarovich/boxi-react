@@ -47,7 +47,7 @@ const run = async () => {
         swipeBehavior.disableVertical()
     }
 
-    await loginPromise
+    await Promise.all([UserData.computeSafeArea(), loginPromise])
 
     createRoot(document.getElementById('root')!).render(
         <StrictMode>

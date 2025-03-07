@@ -10,7 +10,7 @@ import { backgroundMusicAtom } from '@/shared/atoms'
 import AnimatedOutlet from '@/shared/components/animated-outlet'
 import Queries from '@/shared/queries'
 
-import { PlayIcon, ShopIcon } from '@/lib/icons'
+import { PlayIcon, ShopIcon, UserIcon } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 
 export const Route = createFileRoute('/_layout')({
@@ -70,6 +70,17 @@ function RouteComponent() {
                                 <div className={cn('relative z-10 py-4 opacity-50 transition-opacity', isActive && 'opacity-100')}>
                                     <ShopIcon className='mx-auto mb-2 h-6' />
                                     Shop
+                                </div>
+                            </>
+                        )}
+                    </Link>
+                    <Link to='/profile' className='relative flex-1 text-center' onClick={() => hapticFeedback.selectionChanged()}>
+                        {({ isActive }) => (
+                            <>
+                                {isActive && currentPageLight}
+                                <div className={cn('relative z-10 py-4 opacity-50 transition-opacity', isActive && 'opacity-100')}>
+                                    <UserIcon className='mx-auto mb-2 h-6' />
+                                    Profile
                                 </div>
                             </>
                         )}

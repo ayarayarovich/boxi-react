@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { clsx, type ClassValue } from 'clsx'
 import gsap from 'gsap'
 import { twMerge } from 'tailwind-merge'
@@ -87,4 +89,19 @@ export function stopOverscroll(element?: any) {
         addListener('touchmove', handleTouch)
     }
     scroller.style.overscrollBehavior = 'none'
+}
+
+export function dpr(n: number) {
+    return n * window.devicePixelRatio
+}
+
+export const useForceRerender = () => {
+    const setState = useState(false)[1]
+    const rerender = () => {
+        setState((v) => !v)
+    }
+
+    return {
+        rerender,
+    }
 }

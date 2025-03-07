@@ -100,3 +100,9 @@ export const upgradePerk = async (payload: UpgradePerkPayload) => {
     const response = await S_PRIVATE_AXIOS.post<unknown>('/api/perk/upgrade', payload)
     return response.data
 }
+
+export const getProducts = async () => {
+    const response = await S_PRIVATE_AXIOS.get<unknown>('/api/products')
+    console.log(response.data)
+    return response.data
+}
