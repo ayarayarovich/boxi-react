@@ -15,86 +15,33 @@ const getId = (() => {
     }
 })()
 
-function parse(path: string, params?: unknown): string {
-    return path
-        .split('/')
-        .map((p) => {
-            if (!p.startsWith(':')) return p
-
-            const paramName = p.slice(1)
-
-            return String((params as Record<string, unknown>)?.[paramName])
-        })
-        .join('/')
-}
-
 const ModalContext = createContext<ModalProviderValue | null>(null)
 
 type ModalProviderValue = {
-    open: (pathOrComponent: string | ComponentType, data: unknown) => void
-    close: (pathOrComponent: string | ComponentType, data: unknown) => void
+    open: (component: ComponentType, data: unknown) => void
+    close: (component: ComponentType, data?: unknown) => void
     getComponentInstances: (Component: ComponentType) => Instance[]
 }
 
-type ModalProviderProps = PropsWithChildren<{
-    modals?: [path: string, Component: ComponentType][]
-}>
+type ModalProviderProps = PropsWithChildren
 
 type Instance = {
-    path: string
+    id: number
     data: unknown
     isOpen: boolean
+    _scheduledForDeletion?: boolean
 }
 
-function matchPath(routeRegexes: [string, RegExp][], path: string): string | null {
-    for (const [route, regex] of routeRegexes) {
-        if (regex.test(path)) return route
-    }
-
-    return null
-}
-
-export const ModalProvider: FC<ModalProviderProps> = ({ children, modals = [] }) => {
+export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
     const [instances, setInstances] = useState<Record<string, Instance[]>>({})
 
-    const routeRegexes: [string, RegExp][] = useMemo(
-        () =>
-            modals.map((m) => [
-                m[0],
-                new RegExp(
-                    m[0]
-                        .split('/')
-                        .map((seg) => seg.replace(/:.*/, '[^/]+'))
-                        .join('\\/'),
-                ),
-            ]),
-        [modals],
-    )
-
-    const getPathAndKey = useCallback(
-        (pathOrComponent: string | ComponentType, data: unknown) => {
-            if (typeof pathOrComponent === 'string') {
-                const parsedPath = parse(pathOrComponent, data)
-                const rawPath = matchPath(routeRegexes, pathOrComponent)
-                const modal = modals.find((m) => m[0] === rawPath)
-
-                if (!modal) {
-                    throw new Error(`no registered modal path matched for ${pathOrComponent}`)
-                }
-
-                return [parsedPath, getId(modal[1])]
-            } else {
-                const modal = modals.find((m) => m[1] === pathOrComponent)
-                const path = modal ? parse(modal[0], data) : ''
-                return [path, getId(pathOrComponent)]
-            }
-        },
-        [modals, routeRegexes],
-    )
+    const getKey = useCallback((component: ComponentType) => {
+        return getId(component)
+    }, [])
 
     const open = useCallback(
-        (pathOrComponent: string | ComponentType, data: unknown) => {
-            const [path, componentKey] = getPathAndKey(pathOrComponent, data)
+        (component: ComponentType, data: unknown) => {
+            const componentKey = getKey(component)
 
             setInstances(
                 produce((oldInsts) => {
@@ -102,26 +49,33 @@ export const ModalProvider: FC<ModalProviderProps> = ({ children, modals = [] })
                         oldInsts[componentKey] = []
                     }
 
-                    const inst = oldInsts[componentKey].find((i) => i.path === path)
-                    if (!inst) {
-                        oldInsts[componentKey].push({
-                            path,
-                            data,
-                            isOpen: true,
-                        })
-                    } else {
-                        inst.data = data
-                        inst.isOpen = true
+                    const instances = oldInsts[componentKey]
+
+                    const lastInstance = instances[instances.length - 1]
+                    const nextId = (lastInstance?.id ?? 0) + 1
+                    console.log(nextId)
+
+                    instances.push({
+                        id: nextId,
+                        data,
+                        isOpen: false,
+                    })
+
+                    for (const inst of instances) {
+                        if (!inst._scheduledForDeletion) {
+                            inst.isOpen = true
+                            break
+                        }
                     }
                 }),
             )
         },
-        [getPathAndKey],
+        [getKey],
     )
 
     const close = useCallback(
-        (pathOrComponent: string | ComponentType, data: unknown) => {
-            const [path, componentKey] = getPathAndKey(pathOrComponent, data)
+        (component: ComponentType) => {
+            const componentKey = getKey(component)
 
             setInstances(
                 produce((oldInsts) => {
@@ -129,14 +83,23 @@ export const ModalProvider: FC<ModalProviderProps> = ({ children, modals = [] })
                         oldInsts[componentKey] = []
                     }
 
-                    const inst = oldInsts[componentKey].find((inst) => inst.path === path)
-                    if (!inst) return
+                    oldInsts[componentKey] = oldInsts[componentKey].filter((v) => !v._scheduledForDeletion)
 
-                    inst.isOpen = false
+                    const instances = oldInsts[componentKey]
+
+                    const currInst = instances[0]
+                    if (!currInst) return
+                    currInst.isOpen = false
+                    currInst._scheduledForDeletion = true
+
+                    const nextInstance = instances[1]
+                    if (nextInstance) {
+                        nextInstance.isOpen = true
+                    }
                 }),
             )
         },
-        [getPathAndKey],
+        [getKey],
     )
 
     const getComponentInstances = useCallback(
@@ -160,15 +123,15 @@ export const ModalProvider: FC<ModalProviderProps> = ({ children, modals = [] })
     return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
 }
 
-export const useModal = (pathOrComponent: string | ComponentType) => {
-    const { open: openPath, close: closePath } = useContext(ModalContext) as ModalProviderValue
+export const useModal = (component: ComponentType) => {
+    const { open: openComponent, close: closeComponent } = useContext(ModalContext) as ModalProviderValue
 
     const open: <T = unknown>(data?: T) => void = (data) => {
-        openPath(pathOrComponent, data)
+        openComponent(component, data)
     }
 
-    const close: (pathParams?: unknown) => void = (pathParams) => {
-        closePath(pathOrComponent, pathParams)
+    const close: () => void = () => {
+        closeComponent(component)
     }
 
     return {

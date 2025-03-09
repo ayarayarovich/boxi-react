@@ -18,7 +18,7 @@ export const ModalRenderer = ({ Component, ComponentWrapper }: ModalRendererProp
     return (
         <>
             {insts.map((inst) => (
-                <ModalInstanceProvider key={inst.path} data={inst.data} isOpen={inst.isOpen} Component={Component}>
+                <ModalInstanceProvider key={inst.id} data={inst.data} isOpen={inst.isOpen} Component={Component}>
                     <Wrapper>
                         <Component />
                     </Wrapper>

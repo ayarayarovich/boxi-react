@@ -1,6 +1,6 @@
 import { ComponentType } from 'react'
 
-import { useModal } from '@/lib/ayarayarovich-modals'
+import { useModal } from '@ayarayarovich/react-modals'
 
 import { default as ErrorModalComponent, type Data as ErrorModalData } from './error-modal'
 import { default as MessageModalComponent, type Data as MessageModalData } from './message-modal'

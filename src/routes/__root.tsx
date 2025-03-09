@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { ModalRenderer } from '@ayarayarovich/react-modals'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext } from '@tanstack/react-router'
 import { useTonConnectUI } from '@tonconnect/ui-react'
@@ -8,8 +9,6 @@ import AnimatedOutlet from '@/shared/components/animated-outlet'
 import { ErrorModal, MessageModal, PlayModeInfoModal, ShopPerkInfoModal } from '@/shared/modals'
 import { MyRouterContext } from '@/shared/router'
 import { UserService } from '@/shared/services'
-
-import { ModalRenderer } from '@/lib/ayarayarovich-modals'
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
     component: RootComponent,

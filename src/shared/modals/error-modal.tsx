@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
-import { Dialog, Modal, ModalOverlay } from 'react-aria-components'
+import { Dialog, Heading, Modal, ModalOverlay } from 'react-aria-components'
 
+import { useModalInstance } from '@ayarayarovich/react-modals'
 import { AnimatePresence, motion } from 'motion/react'
 
-import { useModalInstance } from '@/lib/ayarayarovich-modals'
 import { CrossIcon } from '@/lib/icons'
 
 const MotionModal = motion.create(Modal)
@@ -73,7 +73,9 @@ export default function PlayModeInfoModalComponent() {
                                         {({ close }) => (
                                             <>
                                                 <div className='relative mb-8'>
-                                                    <h2 className='text-center text-xl font-semibold'>Error</h2>
+                                                    <Heading slot='title' className='text-center text-xl font-semibold'>
+                                                        Error
+                                                    </Heading>
                                                     <button className='absolute -top-4 -right-4 p-4' type='button' onClick={close}>
                                                         <CrossIcon className='h-4' />
                                                     </button>

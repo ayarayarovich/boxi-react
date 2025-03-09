@@ -10,6 +10,8 @@ export class SecondScene extends Scene {
         speed: 0,
     }
 
+    objects: Record<string, pixi.Container | undefined> = {}
+
     async onStart(container: pixi.Container) {
         this.container = container
 
@@ -33,6 +35,7 @@ export class SecondScene extends Scene {
         bunny.eventMode = 'static'
         bunny.cursor = 'pointer'
         bunny.on('pointerdown', this.onClick.bind(this))
+        this.objects.bunny = bunny
 
         this.container.addChild(bgRect)
         this.container.addChild(sceneLabel)
@@ -49,7 +52,7 @@ export class SecondScene extends Scene {
     }
 
     onUpdate(ticker: pixi.Ticker) {
-        const bunny = this.container.getChildByLabel('bunny')
+        const bunny = this.objects.bunny
         if (!bunny) {
             return
         }
