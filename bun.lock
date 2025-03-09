@@ -4,7 +4,7 @@
     "": {
       "name": "boxi-react",
       "dependencies": {
-        "@ayarayarovich/react-modals": "^1.0.3",
+        "@ayarayarovich/react-modals": "^1.0.9",
         "@lukemorales/query-key-factory": "^1.3.4",
         "@tailwindcss/vite": "^4.0.6",
         "@tanstack/react-query": "^5.66.9",
@@ -65,7 +65,7 @@
 
     "@antfu/utils": ["@antfu/utils@8.1.0", "", {}, "sha512-XPR7Jfwp0FFl/dFYPX8ZjpmU4/1mIXTjnZ1ba48BLMyKOV62/tiRjdsFcPs2hsYcSud4tzk7w3a3LjX8Fu3huA=="],
 
-    "@ayarayarovich/react-modals": ["@ayarayarovich/react-modals@1.0.3", "", { "dependencies": { "immer": "^10.1.1" }, "peerDependencies": { "react": "^18.3.1" } }, "sha512-otqNEKIb3oWc5gGTgMgevnSYPvrKnqnA9H1hfkQBLdKsIfiPHQgdhEbwor65ut6YEK9zadsx64cf9zCtYboLQg=="],
+    "@ayarayarovich/react-modals": ["@ayarayarovich/react-modals@1.0.9", "", { "dependencies": { "immer": "^10.1.1" }, "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0" } }, "sha512-l/4BWlqPXrewZAK4AMiZSZHzx881Mez4BERrK8n10SR+glk5JrQVPxlh4gawvk7KT5E0OHRmdNDBgmBuNJbkxw=="],
 
     "@babel/code-frame": ["@babel/code-frame@7.26.2", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.25.9", "js-tokens": "^4.0.0", "picocolors": "^1.0.0" } }, "sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ=="],
 

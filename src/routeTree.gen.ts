@@ -11,7 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutRouteImport } from './routes/_layout/route'
 import { Route as GameIndexImport } from './routes/game/index'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutShopRouteImport } from './routes/_layout/shop/route'
@@ -23,7 +23,7 @@ import { Route as LayoutProfileReferralsImport } from './routes/_layout/profile/
 
 // Create/Update Routes
 
-const LayoutRoute = LayoutImport.update({
+const LayoutRouteRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
@@ -37,19 +37,19 @@ const GameIndexRoute = GameIndexImport.update({
 const LayoutIndexRoute = LayoutIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 
 const LayoutShopRouteRoute = LayoutShopRouteImport.update({
   id: '/shop',
   path: '/shop',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 
 const LayoutProfileRouteRoute = LayoutProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => LayoutRouteRoute,
 } as any)
 
 const LayoutShopIndexRoute = LayoutShopIndexImport.update({
@@ -84,7 +84,7 @@ declare module '@tanstack/react-router' {
       id: '/_layout'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof LayoutImport
+      preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRoute
     }
     '/_layout/profile': {
@@ -92,21 +92,21 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof LayoutProfileRouteImport
-      parentRoute: typeof LayoutImport
+      parentRoute: typeof LayoutRouteImport
     }
     '/_layout/shop': {
       id: '/_layout/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof LayoutShopRouteImport
-      parentRoute: typeof LayoutImport
+      parentRoute: typeof LayoutRouteImport
     }
     '/_layout/': {
       id: '/_layout/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof LayoutIndexImport
-      parentRoute: typeof LayoutImport
+      parentRoute: typeof LayoutRouteImport
     }
     '/game/': {
       id: '/game/'
@@ -175,23 +175,24 @@ const LayoutShopRouteRouteWithChildren = LayoutShopRouteRoute._addFileChildren(
   LayoutShopRouteRouteChildren,
 )
 
-interface LayoutRouteChildren {
+interface LayoutRouteRouteChildren {
   LayoutProfileRouteRoute: typeof LayoutProfileRouteRouteWithChildren
   LayoutShopRouteRoute: typeof LayoutShopRouteRouteWithChildren
   LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
-const LayoutRouteChildren: LayoutRouteChildren = {
+const LayoutRouteRouteChildren: LayoutRouteRouteChildren = {
   LayoutProfileRouteRoute: LayoutProfileRouteRouteWithChildren,
   LayoutShopRouteRoute: LayoutShopRouteRouteWithChildren,
   LayoutIndexRoute: LayoutIndexRoute,
 }
 
-const LayoutRouteWithChildren =
-  LayoutRoute._addFileChildren(LayoutRouteChildren)
+const LayoutRouteRouteWithChildren = LayoutRouteRoute._addFileChildren(
+  LayoutRouteRouteChildren,
+)
 
 export interface FileRoutesByFullPath {
-  '': typeof LayoutRouteWithChildren
+  '': typeof LayoutRouteRouteWithChildren
   '/profile': typeof LayoutProfileRouteRouteWithChildren
   '/shop': typeof LayoutShopRouteRouteWithChildren
   '/': typeof LayoutIndexRoute
@@ -213,7 +214,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/_layout': typeof LayoutRouteWithChildren
+  '/_layout': typeof LayoutRouteRouteWithChildren
   '/_layout/profile': typeof LayoutProfileRouteRouteWithChildren
   '/_layout/shop': typeof LayoutShopRouteRouteWithChildren
   '/_layout/': typeof LayoutIndexRoute
@@ -259,12 +260,12 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  LayoutRoute: typeof LayoutRouteWithChildren
+  LayoutRouteRoute: typeof LayoutRouteRouteWithChildren
   GameIndexRoute: typeof GameIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  LayoutRoute: LayoutRouteWithChildren,
+  LayoutRouteRoute: LayoutRouteRouteWithChildren,
   GameIndexRoute: GameIndexRoute,
 }
 
@@ -283,7 +284,7 @@ export const routeTree = rootRoute
       ]
     },
     "/_layout": {
-      "filePath": "_layout.tsx",
+      "filePath": "_layout/route.tsx",
       "children": [
         "/_layout/profile",
         "/_layout/shop",
